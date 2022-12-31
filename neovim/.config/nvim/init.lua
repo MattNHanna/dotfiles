@@ -16,6 +16,16 @@ local packer_bootstrap = ensure_packer()
 require('packer').startup(function(use)
 	use 'wbthomason/packer.nvim'
 	use 'morhetz/gruvbox'
+        use 'neovim/nvim-lspconfig'
+        use {
+            'ms-jpq/coq_nvim', branch = 'coq', run = 'python3 -m coq deps'
+        }
+        use {
+            'ms-jpq/coq.artifacts', branch = 'artifacts'
+        }
+        use {
+            'ms-jpq/coq.thirdparty', branch = '3p'
+        }
 	--if packer wasn't installed install all plugins
 	if packer_bootstrap then
 		require('packer').sync()
@@ -35,3 +45,11 @@ vim.opt.relativenumber = true
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
+
+--lsp setup
+local lspconfig = require 'lspconfig'
+vim.g.coq_settings = { auto_start = 'shut-up' } --autostart coq for autocompletion w/ lspconfig
+local servers = {'eslint', 'html', 'cssls', 'jsonls'}
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities())
+end
