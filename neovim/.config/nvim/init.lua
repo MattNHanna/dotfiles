@@ -26,6 +26,8 @@ require('packer').startup(function(use)
         use {
             'ms-jpq/coq.thirdparty', branch = '3p'
         }
+        use 'yuezk/vim-js'
+        use 'maxmellon/vim-jsx-pretty'
 	--if packer wasn't installed install all plugins
 	if packer_bootstrap then
 		require('packer').sync()
